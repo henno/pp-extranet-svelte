@@ -30,6 +30,7 @@
     "@fontsource/fira-mono": "^4.5.0",
     "@lukeed/uuid": "^2.0.0",
     "cookie": "^0.4.1",
-    "i18n-js": "^4.0.0-alpha.14"
+    "i18n-js": "^4.0.0-alpha.14",
+    "svelte-i18n": "^3.4.0"
   }
 }
