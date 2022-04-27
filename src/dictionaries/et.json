@@ -79,5 +79,23 @@
     "Sat": "L",
     "Sun": "P"
   },
-  "workDays": "Tööpäevad"
+  "workDays": "Tööpäevad",
+  "newOrder": "Uus tellimus",
+  "location": "Asukoht",
+  "selectLocation": "Vali asukoht",
+  "priority": "Prioriteet",
+  "priorityHigh": "Kõrge",
+  "priorityMedium": "Keskmine",
+  "priorityLow": "Madal",
+  "orderDescription": "Lisainformatsioon",
+  "addWork": "Lisa töö",
+  "daysMin": {
+    "Mo": "E",
+    "Tu": "T",
+    "We": "K",
+    "Th": "N",
+    "Fr": "R",
+    "Sa": "L",
+    "Su": "P"
+  }
 }

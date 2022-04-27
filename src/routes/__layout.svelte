@@ -1,7 +1,10 @@
 <script>
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
+	import { Styles } from 'sveltestrap';
 </script>
+
+<Styles />
 
 <Header />
 
