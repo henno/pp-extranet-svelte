@@ -2,6 +2,20 @@
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
 	import { Styles } from 'sveltestrap';
+
+	import { locale, loadTranslations } from '$lib/translations';
+
+	export const load = async ({ url }) => {
+		const { pathname } = url;
+
+		const defaultLocale = 'en'; // get from cookie, user session, ...
+
+		const initLocale = locale.get() || defaultLocale; // set default if no locale already set
+
+		await loadTranslations(initLocale, pathname); // keep this just before the `return`
+
+		return {};
+	}
 </script>
 
 <Styles />
@@ -13,7 +27,7 @@
 </main>
 
 <footer>
-	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+
 </footer>
 
 <style>
@@ -34,10 +48,6 @@
 		justify-content: center;
 		align-items: center;
 		padding: 40px;
-	}
-
-	footer a {
-		font-weight: bold;
 	}
 
 	@media (min-width: 480px) {
