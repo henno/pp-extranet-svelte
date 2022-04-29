@@ -4,6 +4,7 @@
 
 <script>
 	import Counter from '$lib/Counter.svelte';
+	import { t } from '$lib/translations';
 </script>
 
 <svelte:head>
@@ -26,6 +27,7 @@
 		try editing <strong>src/routes/index.svelte</strong>
 	</h2>
 
+	<p>foo {$t('account')} bar</p>
 	<Counter />
 </section>
 

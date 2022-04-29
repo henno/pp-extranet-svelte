@@ -1,13 +1,30 @@
+<script context="module">
+	import { t, locales, locale, loadTranslations } from '$lib/translations';
+	/** @type {import('@sveltejs/kit').Load} */
+	export const load = async () => {
+		const initialLocale ='en'; // get from cookie / url / fetch from server...
+		await loadTranslations(initialLocale); // keep this just before the `return`
+		return {};
+	}
+</script>
 <script>
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
+
+
 </script>
 
 <Header />
-
 <main>
 	<slot />
 </main>
+{$t('account', { count: 2 })}<br />
+<select bind:value="{$locale}">
+	{#each $locales as value}
+		<option value="{value}">{$t(`lang.${value}`)}</option>
+	{/each}
+</select>
+
 
 <footer>
 	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
