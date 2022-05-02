@@ -1,33 +1,29 @@
-<script>
+<script context="module">
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
-	import { Styles } from 'sveltestrap';
 
-	import { locale, loadTranslations } from '$lib/translations';
-
-	export const load = async ({ url }) => {
-		const { pathname } = url;
-
-		const defaultLocale = 'en'; // get from cookie, user session, ...
-
-		const initLocale = locale.get() || defaultLocale; // set default if no locale already set
-
-		await loadTranslations(initLocale, pathname); // keep this just before the `return`
-
+	import { t, locales, locale, loadTranslations } from '$lib/translations';
+	/** @type {import('@sveltejs/kit').Load} */
+	export const load = async () => {
+		const initialLocale ='et'; // get from cookie / url / fetch from server...
+		await loadTranslations(initialLocale); // keep this just before the `return`
 		return {};
 	}
 </script>
 
-<Styles />
+<svelte:head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+</svelte:head>
 
 <Header />
 
 <main>
 	<slot />
+
 </main>
 
 <footer>
-
+	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
 </footer>
 
 <style>
@@ -48,6 +44,10 @@
 		justify-content: center;
 		align-items: center;
 		padding: 40px;
+	}
+
+	footer a {
+		font-weight: bold;
 	}
 
 	@media (min-width: 480px) {

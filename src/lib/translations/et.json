@@ -1,0 +1,14 @@
+{
+  "newOrder": "Uus tellimus",
+  "location": "Asukoht",
+  "selectLocation": "Vali asukoht",
+  "priority": "Prioriteet",
+  "priorityHigh": "Kõrge",
+  "priorityMedium": "Keskmine",
+  "priorityLow": "Madal",
+  "orderDescription": "Lisainformatsioon",
+  "addWork": "Lisa töö",
+  "dateDue": "Tähtaeg",
+  "addFile": "Lisa fail(-id)",
+  "addFileDescription": "Lisa tellimusele pildid või failid"
+}

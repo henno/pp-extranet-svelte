@@ -26,10 +26,10 @@
 			<NavItem>
 				<NavLink href="/components/">Inactive Link</NavLink>
 			</NavItem>
-			<Dropdown nav setActiveFromChild  class="position-absolute end-0">
+			<Dropdown class="position-absolute end-0 me-2" nav setActiveFromChild>
 				<DropdownToggle nav class="nav-link" caret>Dropdown</DropdownToggle>
 				<DropdownMenu dark>
-					{#each companies as company}<DropdownItem href="#" id="{company.id}">{company.text}</DropdownItem>{/each}
+					{#each companies as company}<DropdownItem href="#">{company.text}</DropdownItem>{/each}
 				</DropdownMenu>
 			</Dropdown>
 		</Nav>
