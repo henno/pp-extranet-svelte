@@ -2,7 +2,7 @@
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
 
-	import { t, locales, locale, loadTranslations } from '$lib/translations';
+	import { t, locales, locale, loadTranslations } from '$lib/translations/translations';
 	/** @type {import('@sveltejs/kit').Load} */
 	export const load = async () => {
 		const initialLocale ='et'; // get from cookie / url / fetch from server...

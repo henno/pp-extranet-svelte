@@ -1,7 +1,7 @@
 <script context="module">
     export const prerender = true;
     import Select from 'svelte-select';
-    import { t } from '$lib/translations';
+    import { t } from '$lib/translations/translations';
 
     import { DateInput, localeFromDateFnsLocale } from 'date-picker-svelte'
     import { et } from 'date-fns/locale'
