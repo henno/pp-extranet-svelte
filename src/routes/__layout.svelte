@@ -1,6 +1,7 @@
 <script context="module">
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
+	import { session } from '$app/stores';
 
 	import { t, locales, locale, loadTranslations } from '$lib/translations/translations';
 	/** @type {import('@sveltejs/kit').Load} */
@@ -10,17 +11,24 @@
 		return {};
 	}
 </script>
+<script>
+	import SignInForm from "../lib/components/SignInForm.svelte";
+</script>
 
 <svelte:head>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
 </svelte:head>
-
+{#if $session != null }
 <Header />
 
-<main>
+	<main>
 	<slot />
 
 </main>
+	{:else}
+	<SignInForm />
+{/if}
+
 
 <footer>
 	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
