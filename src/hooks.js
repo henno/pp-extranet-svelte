@@ -24,12 +24,12 @@ export const handle = async ({ event, resolve }) => {
 	return response;
 };*/
 
-import { parse } from 'cookie';
 import { getSession as getSessionFromApi } from './routes/api/_db';
+import * as cookie from 'cookie';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
-	const cookies = parse(event.request.headers.get('cookie') || '');
+	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
 
 	if (cookies.session_id) {
 		const session = await getSessionFromApi(cookies.session_id);
@@ -37,6 +37,18 @@ export async function handle({ event, resolve }) {
 			event.locals.user = { email: session.email };
 			return resolve(event);
 		}
+	} else if (event.url.pathname !== '/sign-in' && event.url.pathname !== '/api/sign-in' && event.url.pathname !== '/api/sign-out')
+	{
+		console.log('Handle' + event.url.pathname)
+		const response = await resolve(event);
+		response.headers.set(
+			'set-cookie',
+			cookie.serialize('redirectUrl', event.request.url, {
+				path: '/',
+				httpOnly: true
+			})
+		);
+		return response;
 	}
 
 	event.locals.user = null;

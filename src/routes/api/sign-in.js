@@ -18,13 +18,17 @@ export async function post({ request }) {
     return {
         status: 200,
         headers: {
-            'Set-Cookie': serialize('session_id', id, {
+            'Set-Cookie': [serialize('session_id', id, {
                 path: '/',
                 httpOnly: true,
                 sameSite: 'strict',
                 secure: process.env.NODE_ENV === 'production',
                 maxAge: 60 * 60 * 24 * 7, // one week
-            }),
+            }), serialize('redirectUrl', '', {
+                path: '/',
+                httpOnly: true,
+                expires: new Date(0),
+            })]
         },
         body: {
             user: {

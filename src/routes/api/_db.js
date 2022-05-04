@@ -4,7 +4,7 @@ const users = [
     {
         email: 'mail@example.com',
         // ⚠️ CAUTION: Do not store a plain password like this. Use proper hashing and salting.
-        password: 'thisisnotsecret',
+        password: '1234',
     },
 ];
 
