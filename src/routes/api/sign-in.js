@@ -2,11 +2,10 @@ import { createSession, getUserByEmail } from './_db';
 import { serialize } from 'cookie';
 
 export async function post({ request }) {
-    const body = await request.json();
-    const user = await getUserByEmail(body.email);
+    const { email, password } = await request.json();
+    const user = await getUserByEmail(email);
 
-    // ⚠️ CAUTION: Do not store a plain passwords. Use proper hashing and salting.
-    if (!user || user.password !== body.password) {
+    if (!user || user.password !== password) {
         return {
             status: 401,
             body: {
@@ -15,7 +14,7 @@ export async function post({ request }) {
         };
     }
 
-    const { id } = await createSession(body.email);
+    const { id } = await createSession(email);
     return {
         status: 200,
         headers: {
@@ -28,7 +27,9 @@ export async function post({ request }) {
             }),
         },
         body: {
-            message: 'Successfully signed in',
+            user: {
+                email,
+            },
         },
     };
 }

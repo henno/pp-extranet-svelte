@@ -1,8 +1,7 @@
 <script>
-    import Input from '$lib/components/Input.svelte';
-    import Button from '$lib/components/Button.svelte';
 
     import { createEventDispatcher } from 'svelte';
+    import {Button, Col, Input} from "sveltestrap";
 
     let email = '';
     let password = '';
@@ -26,13 +25,14 @@
         })
     }
 </script>
-
-<form on:submit|preventDefault={submit} class='space-y-5 {$$props.class}'>
-    <Input label='Email' id='email' name='email' type='email' bind:value={email} />
-    <Input label='Password' id='password' name='password' type='password' bind:value={password} />
-    <Input label='Confirm Password' id='confirm-password' name='confirm-password' type='password' bind:value={confirmPassword} bind:inputRef={confirmPasswordInputRef} />
-    {#if error}
-        <p class='text-red-600 text-sm font-semibold'>{error}</p>
-    {/if}
-    <Button type='submit'>Sign Up</Button>
-</form>
+<Col>
+    <form on:submit|preventDefault={submit} class="{$$props.class}">
+        <Input label='Email' id='email' name='email' type='email' bind:value={email} />
+        <Input label='Password' id='password' name='password' type='password' bind:value={password} />
+        <Input label='Confirm Password' id='confirm-password' name='confirm-password' type='password' bind:value={confirmPassword} bind:inputRef={confirmPasswordInputRef} />
+        {#if error}
+            <p class='text-red-600 text-sm font-semibold'>{error}</p>
+        {/if}
+        <Button type='submit'>Sign Up</Button>
+    </form>
+</Col>

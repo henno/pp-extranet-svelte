@@ -21,6 +21,7 @@
 
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
+    import {t} from "../translations/translations.js";
     const navigation = [
         {
             href: '/',
@@ -42,11 +43,11 @@
     <Navbar color="dark" dark expand="md">
         <Nav navbar>
             <NavItem>
-                <NavLink href="/components/">Inactive Link</NavLink>
+                <NavLink href="/">{$t('homePage')}</NavLink>
             </NavItem>
-            {#if $session}
+            {#if $session.user}
                 <NavItem>
-                    <NavLink on:click={handleSignOut}>Sign out</NavLink>
+                    <NavLink on:click={handleSignOut}>{$t('signOut')}</NavLink>
                 </NavItem>
             {/if}
             <Dropdown class="position-absolute end-0 me-2" nav setActiveFromChild>

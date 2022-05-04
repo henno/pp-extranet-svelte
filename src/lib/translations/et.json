@@ -10,5 +10,7 @@
   "addWork": "Lisa töö",
   "dateDue": "Tähtaeg",
   "addFile": "Lisa fail(-id)",
-  "addFileDescription": "Lisa tellimusele pildid või failid"
+  "addFileDescription": "Lisa tellimusele pildid või failid",
+  "homePage": "Avaleht",
+  "signOut": "Logi välja"
 }
