@@ -40,15 +40,16 @@ export async function handle({ event, resolve }) {
 	} else if (event.url.pathname !== '/sign-in' && event.url.pathname !== '/api/sign-in' && event.url.pathname !== '/api/sign-out')
 	{
 		console.log('Handle' + event.url.pathname)
-		const response = await resolve(event);
+		/*const response = await resolve(event);
 		response.headers.set(
 			'set-cookie',
 			cookie.serialize('redirectUrl', event.request.url, {
-				path: '/',
-				httpOnly: true
+				path: '/'
 			})
-		);
-		return response;
+		);*/
+		console.log(event.url.href.substring(0, event.url.href.length - event.url.pathname.length) + '/sign-in');
+		console.log('hooks');
+		return Response.redirect(event.url.href.substring(0, event.url.href.length - event.url.pathname.length) + '/sign-in');
 	}
 
 	event.locals.user = null;

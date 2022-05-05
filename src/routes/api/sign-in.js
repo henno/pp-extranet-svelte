@@ -24,10 +24,6 @@ export async function post({ request }) {
                 sameSite: 'strict',
                 secure: process.env.NODE_ENV === 'production',
                 maxAge: 60 * 60 * 24 * 7, // one week
-            }), serialize('redirectUrl', '', {
-                path: '/',
-                httpOnly: true,
-                expires: new Date(0),
             })]
         },
         body: {
