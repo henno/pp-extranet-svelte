@@ -10,14 +10,15 @@
         Dropdown
     } from 'sveltestrap';
 
-    let selectedCompany = 'Company 1';
+    /*let selectedCompany = 'Company 1';
     let companies = [
         {id: 1, text: `Company 1`},
         {id: 2, text: `Company 2`},
     ]
 
     $: console.log('Changed selected:', selectedCompany)
-    $: console.log('Updated options:', companies)
+    $: console.log('Updated options:', companies)*/
+
 
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
