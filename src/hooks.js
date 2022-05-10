@@ -39,6 +39,9 @@ export async function handle({ event, resolve }) {
 		}
 	} else if (event.url.pathname !== '/sign-in' && event.url.pathname !== '/api/sign-in' && event.url.pathname !== '/api/sign-out')
 	{
+		// TODO: commitis fc74a8d5bfc97c85221b00984055f430045eb0b4 redirectUrl küpsise lisamine veel töötas. Tundub, et
+		//  peab selle commiti aluseks võtma ja nuputama, kuidas teha tühi response objekt lisades sinna redirectUrl küp-
+		//  sise ja 302 Location: /sign-in headeri, vältides tegeliku endpoindi käima minemist.
 		console.log('Handle' + event.url.pathname)
 		const response = await resolve(event);
 		response.headers.set(
