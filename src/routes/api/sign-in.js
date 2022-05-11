@@ -45,6 +45,7 @@ export async function post({request}) {
     if (cookies.redirectUrl) {
 
         console.log('sign-in.post(' + request.method + ' ' + request.url + '): cookie redirectUrl present')
+        console.log(request.headers)
         console.log('sign-in.post(' + request.method + ' ' + request.url + '): redirecting to ' + cookies.redirectUrl)
 
         response.status = 302
