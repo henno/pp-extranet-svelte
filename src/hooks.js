@@ -43,16 +43,16 @@ export async function handle({ event, resolve }) {
 		//  peab selle commiti aluseks võtma ja nuputama, kuidas teha tühi response objekt lisades sinna redirectUrl küp-
 		//  sise ja 302 Location: /sign-in headeri, vältides tegeliku endpoindi käima minemist.
 		console.log('Handle' + event.url.pathname)
-		const response = await resolve(event);
+		const response = Response.redirect(event.url.href.substring(0, event.url.href.length - event.url.pathname.length) + '/sign-in');
 		response.headers.set(
 			'set-cookie',
 			cookie.serialize('redirectUrl', event.request.url, {
 				path: '/'
 			})
 		);
-		console.log(event.url.href.substring(0, event.url.href.length - event.url.pathname.length) + '/sign-in');
 		console.log('hooks');
-		return Response.redirect(event.url.href.substring(0, event.url.href.length - event.url.pathname.length) + '/sign-in');
+		console.log(event.request.headers)
+		return response
 	}
 
 	event.locals.user = null;

@@ -6,14 +6,14 @@ import { parse, serialize } from 'cookie';
 export async function get({ request }) {
     const cookies = parse(request.headers.get('cookie') || '');
 
-    if (cookies.session_id) {
-        await removeSession(cookies.session_id);
+    if (cookies.sessionId) {
+        await removeSession(cookies.sessionId);
     }
 
     return {
         status: 200,
         headers: {
-            'Set-Cookie': serialize('session_id', '', {
+            'Set-Cookie': serialize('sessionId', '', {
                 path: '/',
                 expires: new Date(0),
             }),

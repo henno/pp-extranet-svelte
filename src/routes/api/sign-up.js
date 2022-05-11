@@ -24,7 +24,7 @@ export async function post({ request }) {
     return {
         status: 201,
         headers: {
-            'Set-Cookie': serialize('session_id', id, {
+            'Set-Cookie': serialize('sessionId', id, {
                 path: '/',
                 httpOnly: true,
                 sameSite: 'strict',

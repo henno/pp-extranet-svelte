@@ -15,6 +15,7 @@
             body: JSON.stringify({email, password}),
             headers: {
                 'Content-Type': 'application/json',
+                'foo': 'bar',
             },
         });
 
