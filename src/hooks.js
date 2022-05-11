@@ -1,96 +1,128 @@
-/*import { v4 as uuid } from '@lukeed/uuid';
-
-import * as cookie from 'cookie';
-
-/!** @type {import('@sveltejs/kit').Handle} *!/
-export const handle = async ({ event, resolve }) => {
-	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
-	event.locals.userid = cookies['userid'] || uuid();
-
-	const response = await resolve(event);
-
-	if (!cookies['userid']) {
-		// if this is the first time the user has visited this app,
-		// set a cookie so that we recognise them when they return
-		response.headers.set(
-			'set-cookie',
-			cookie.serialize('userid', event.locals.userid, {
-				path: '/',
-				httpOnly: true
-			})
-		);
-	}
-
-	return response;
-};*/
-
 import {getSession as getSessionFromApi} from './routes/api/_db';
-import * as cookie from 'cookie';
+import {parse, serialize} from "cookie";
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({event, resolve}) {
 
+    const responseJar = {status: 0, headers: [], cookies: []}
 
-    console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): started')
-    const cookies = cookie.parse(event.request.headers.get('cookie') || '');
+    // Helpers
+    function loggingIn() {
 
-    if (cookies.sessionId) {
-        console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): sessionId was present')
-        const session = await getSessionFromApi(cookies.sessionId);
-        if (session) {
-            console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): session is valid, adding user data to locals')
-            event.locals.user = {email: session.email};
-            console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): returning resolved event')
-            return resolve(event);
-        } else {
-            console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): session is expired')
-
-            // Create 302 /sign-in response
-            const response = Response.redirect(event.url.href.substring(0, event.url.href.length - event.url.pathname.length) + '/sign-in');
-
-            // Add an expired sessionId cookie to delete it from the browser
-            console.log('Unsetting sessionId cookie')
-            response.headers.set(
-                'set-cookie', [
-                    cookie.serialize('redirectUrl', event.request.url, {
-                        path: '/'
-                    }),
-                    cookie.serialize('sessionId', '', {
-                        path: '/',
-                        expires: new Date(0),
-                    })
-                ]
-            );
-
-            console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): redirecting to /sign-in')
-            return response;
-
-        }
-    } else {
-        console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): sessionId was NOT present')
-        if (event.url.pathname !== '/sign-in' && event.url.pathname !== '/api/sign-in' && event.url.pathname !== '/api/sign-out') {
-            console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): not a sign-in path')
-            const response = Response.redirect(event.url.href.substring(0, event.url.href.length - event.url.pathname.length) + '/sign-in');
-
-            console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): adding redirectUrl cookie to ' + event.request.url)
-            response.headers.set(
-                'set-cookie',
-                cookie.serialize('redirectUrl', event.request.url, {
-                    path: '/'
-                })
-            );
-
-            console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): redirecting to /sign-in')
-            return response
-        } else {
-            console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): sign in path')
-        }
+        return event.url.pathname === '/sign-in' || event.url.pathname === '/api/sign-in' || event.url.pathname === '/api/sign-out';
     }
 
-    console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): processing event')
-    event.locals.user = null;
+    function createCookie(cookieName, cookieValue = '', expires) {
+        const cookie = {
+            path: '/',
+            httpOnly: true
+        }
+        if (expires) {
+            console.log('expires: '+ expires)
+            cookie.expires = expires
+        }
+        return serialize(cookieName, cookieValue, cookie);
+    }
+
+    function removeCookie(cookieName) {
+        log('removing cookie ' + cookieName)
+        writeCookie(createCookie(cookieName, '', new Date(0)))
+    }
+
+    function writeCookie(cookie) {
+        log('pushing to cookies array cookie'+ JSON.stringify(cookie))
+        responseJar.cookies.push(cookie);
+    }
+
+    function addCookie(cookieName, cookieValue) {
+        log('adding cookie ' + cookieName + '=' + cookieValue)
+        writeCookie(createCookie(cookieName, cookieValue))
+    }
+
+    function getSessionIdFromCookie() {
+        log('getting sessionid from cookie')
+        const cookies = parse(event.request.headers.get('cookie') || '');
+        return cookies.sessionId
+    }
+
+    function deleteSessionIdCookie() {
+        log('deleting session cookie')
+        removeCookie('sessionId')
+    }
+
+    function addCookiesFromJar(headers) {
+
+        responseJar.cookies.forEach(function (header) {
+            headers.append('Set-Cookie', header)
+        })
+        return headers
+
+    }
+
+    function redirectToLogin() {
+        log('redirecting to /sign-in')
+        //return response.redirect(event.url.href.substring(0, event.url.href.length - event.url.pathname.length) + '/sign-in')
+        responseJar.headers.push(['Location', '/sign-in'])
+        responseJar.status = 302
+        console.log(responseJar)
+
+        // Create response
+        let headers = new Headers(responseJar.headers);
+        headers = addCookiesFromJar(headers)
+        console.log(headers)
+        return new Response('', {status: responseJar.status, headers})
+    }
+
+    function sessionIsExpired() {
+        return !session;
+    }
+
+    function saveRedirectUrl() {
+        if (loggingIn()) return
+        log('saving ' + event.request.url + ' as redirectUrl')
+        addCookie('redirectUrl', event.request.url)
+    }
+
+    function log(message) {
+        console.log('hooks.handle(' + event.request.method + ' ' + event.url.pathname + '): ' + message)
+    }
+
+    // Start here:
+    if (loggingIn()) {
+        log('logging in')
+        deleteSessionIdCookie()
+        return resolve(event);
+    }
+
+    const sessionId = getSessionIdFromCookie()
+    log('sessionId=' + sessionId)
+
+    if (!sessionId) {
+        log('no session id')
+        saveRedirectUrl()
+        console.log('Here are request headers:')
+        console.log(event.request.headers)
+        //if(event.request.headers['content-type'])
+        return redirectToLogin()
+    }
+
+    log('getting session data from db')
+    const session = await getSessionFromApi(sessionId)
+
+    if (sessionIsExpired()) {
+        log('session is expired')
+        saveRedirectUrl(responseJar)
+        return redirectToLogin()
+
+    }
+
+    log('writing session data to locals')
+    event.locals.user = session;
+
+    log('processing page')
     return resolve(event);
 }
+
 
 /** @type {import('@sveltejs/kit').GetSession} */
 export function getSession(event) {

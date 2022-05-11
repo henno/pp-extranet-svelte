@@ -33,6 +33,7 @@ export const createSession = (email) => {
 };
 
 export const getSession = (id) => {
+
     const session = sessions.find((session) => session.id === id);
     if (!session) return Promise.resolve(null);
     return Promise.resolve(session);

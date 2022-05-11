@@ -8,6 +8,8 @@
     async function handleSubmit({detail: {email, password}}) {
         console.log('sign-in.handleSubmit(): sending POST /api/sign-in request')
 
+        let body = null;
+
         try {
             const response = await fetch('/api/sign-in', {
                 method: 'POST',
@@ -17,16 +19,22 @@
                 },
             });
 
-            const body = await response.json();
+            body = await response.json();
             console.log('sign-in.handleSubmit(): received response from POST /api/sign-in');
             if (response.ok) {
                 console.log('sign-in.handleSubmit(): response is positive')
                 $session = body;
-                await goto('/');
+                if(response.headers.get('redirect-url')){
+                    console.log('sign-in.handleSubmit(): redirect-url header present')
+                    await goto(response.headers.get('redirect-url'))
+                }else{
+                    console.log('sign-in.handleSubmit(): redirect-url header NOT present')
+                    await goto('/');
+                }
             }
-            error = body.message;
         } catch (e) {
-            console.log('sign-in.handleSubmit(): catch ' + JSON.stringify(e))
+            console.log('sign-in.handleSubmit(): catch ' + e.message + ' :: ' + JSON.stringify(body))
+            console.log(body)
         }
     }
 </script>

@@ -1,6 +1,5 @@
 import {createSession, getUserByEmail} from './_db';
 import {serialize, parse} from 'cookie';
-import * as cookie from "cookie";
 
 export async function post({request}) {
     console.log('sign-in.post(' + request.method + ' ' + request.url + '): started')
@@ -45,19 +44,13 @@ export async function post({request}) {
     if (cookies.redirectUrl) {
 
         console.log('sign-in.post(' + request.method + ' ' + request.url + '): cookie redirectUrl present')
-        console.log(request.headers)
-        console.log('sign-in.post(' + request.method + ' ' + request.url + '): redirecting to ' + cookies.redirectUrl)
+        response.headers['Redirect-Url'] = cookies.redirectUrl
 
-        response.status = 302
-        response.headers.location = cookies.redirectUrl
-        console.log('sign-in.post(' + request.method + ' ' + request.url + '): removing redirectUrl cookie')
-
-        response.headers["Set-Cookie"].push(
-            serialize('redirectUrl', '', {
-                path: '/',
-                expires: new Date(0),
-            })
-        )
+        response.headers['Set-Cookie'].push(serialize('redirectUrl', '', {
+            path: '/',
+            httpOnly: true,
+            expires: new Date(0)
+        }))
 
     } else {
         console.log('sign-in.post(' + request.method + ' ' + request.url + '): cookie redirectUrl NOT present')
