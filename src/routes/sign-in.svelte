@@ -6,6 +6,7 @@
     let error;
 
     async function handleSubmit({detail: {email, password}}) {
+        console.log('sign-in.handleSubmit(): sending POST /api/sign-in request')
         const response = await fetch('/api/sign-in', {
             method: 'POST',
             body: JSON.stringify({email, password}),
@@ -15,7 +16,9 @@
         });
 
         const body = await response.json();
+        console.log('sign-in.handleSubmit(): received response from POST /api/sign-in');
         if (response.ok) {
+            console.log('sign-in.handleSubmit(): response is positive')
             $session = body;
             await goto('/');
         }

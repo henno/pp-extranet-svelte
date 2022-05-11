@@ -5,16 +5,16 @@
 
     /** @type {import('@sveltejs/kit').Load} */
     export async function load({session, url}) {
-        if (!session?.user && url.pathname !== '/sign-in' && url.pathname !== '/api/sign-in' && url.pathname !== '/api/sign-out') {
-            console.log('load' + url.pathname);
-            return {
-                status: 302,
-                redirect: '/sign-in',
-                headers: {
-                    'x-foo': 'bar',
-                },
-            };
-        }
+        // if (!session?.user && url.pathname !== '/sign-in' && url.pathname !== '/api/sign-in' && url.pathname !== '/api/sign-out') {
+        //     console.log('__layout.svelte.load():' + url.pathname);
+        //     return {
+        //         status: 302,
+        //         redirect: '/sign-in',
+        //         headers: {
+        //             'x-foo': 'bar',
+        //         },
+        //     };
+        // }
         const initialLocale = 'et'; // get from cookie / url / fetch from server...
         await loadTranslations(initialLocale); // keep this just before the `return`
         return {};
