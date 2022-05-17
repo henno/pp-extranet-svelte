@@ -1,9 +1,9 @@
-import { createSession, getUserByUsername, registerUser } from './_db.js';
+import { createSession, getUserByUsername, registerUser } from '../../lib/models/userModel.ts';
 import { serialize } from 'cookie';
 
 export async function post({ request }) {
-    const { email, password } = await request.json();
-    const user = await getUserByUsername(email);
+    const { email: username, password } = await request.json();
+    const user = await getUserByUsername(username);
 
     if (user) {
         return {
@@ -14,13 +14,12 @@ export async function post({ request }) {
         };
     }
 
-    // ⚠️ CAUTION: Do not store a plain password like this. Use proper hashing and salting.
     await registerUser({
-        email,
+        username,
         password,
     });
 
-    const { id } = await createSession(email);
+    const { id } = await createSession(username);
     return {
         status: 201,
         headers: {
@@ -34,7 +33,7 @@ export async function post({ request }) {
         },
         body: {
             user: {
-                email,
+                email: username,
             },
         },
     };

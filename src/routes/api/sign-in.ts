@@ -1,7 +1,15 @@
-import {createSession, getUserByUsername} from './_db.js';
+import {getUserByUsername} from '$lib/models/userModel';
+import {createSession} from '$lib/models/sessionModel';
 import {serialize, parse} from 'cookie';
 
-export async function post({request}) {
+import type { RequestHandler } from '@sveltejs/kit'
+import type {RequestEvent} from "@sveltejs/kit/types/private";
+
+// take a look what hides behind `ProductId` ;)
+
+
+
+export const post: RequestEvent = async ({ request }) => {
     function log(message) {
         log('' + message)
     }

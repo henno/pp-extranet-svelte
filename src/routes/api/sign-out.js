@@ -1,4 +1,4 @@
-import { removeSession } from './_db.js';
+import { removeSession } from '../../lib/models/userModel.ts';
 import { parse, serialize } from 'cookie';
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function get({ request }) {

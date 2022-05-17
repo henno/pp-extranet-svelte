@@ -1,4 +1,4 @@
-import * as db from "../api/_db.ts"
+import * as db from "../../lib/models/userModel.ts"
 
 export const post = async ({request}) => {
 

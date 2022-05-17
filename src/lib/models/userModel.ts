@@ -1,5 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
-import { PrismaClient } from '@prisma/client'
+import {v4 as uuidv4} from 'uuid';
+import {PrismaClient} from '@prisma/client'
+
 const prisma = new PrismaClient()
 
 
@@ -7,39 +8,40 @@ let sessions: any = [];
 
 export const getUserByUsername = async function (username: string) {
     const existingUser = await prisma.users.findUnique({
-        where:{username: username}
+        where: {username: username}
     })
     if (!existingUser) return Promise.resolve(null);
     return Promise.resolve(existingUser);
 };
 
-export const registerUser = (user:any) => {
+export const registerUser = async (user: any) => {
+    async function userExists() {
+        const existingUser = await prisma.users.findUnique({
+            where: {
+                username: user.username
+            }
+        })
+        return existingUser;
+    }
 
-    const existingUser = users.find((u) => u.email === user.email);
+    const existingUser = await userExists();
     if (existingUser) return Promise.reject(new Error('User already exists'));
-    users.push(user);
-    return Promise.resolve(user);
+    return Promise.resolve(await prisma.users.create({
+        data: user,
+    }));
 };
 
-export const createSession = async (user: ) => {
+export const createSession = async (user: any) => {
 
-    const session = await prisma.sessions.create({
+    return Promise.resolve(await prisma.sessions.create({
         data: {
-            sessionId:
+            id: uuidv4(),
+            userId: user.id
         },
-    })
-
-
-    const session = {
-        id: uuidv4(),
-        email,
-    };
-    sessions.push(session);
-    return Promise.resolve(session);
+    }));
 };
 
 export const getSession = async (id) => {
-
 
 
     const session = await prisma.sessions.findUnique({
