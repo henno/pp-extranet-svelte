@@ -1,11 +1,14 @@
-import {createSession, getUserByEmail} from './_db';
+import {createSession, getUserByUsername} from './_db.js';
 import {serialize, parse} from 'cookie';
 
 export async function post({request}) {
-    console.log('sign-in.post(' + request.method + ' ' + request.url + '): started')
-    const {email, password} = await request.json();
-    const user = await getUserByEmail(email);
+    function log(message) {
+        log('' + message)
+    }
 
+    log('started')
+    const {username, password} = await request.json();
+    const user = await getUserByUsername(username);
     if (!user || user.password !== password) {
         return {
             status: 401,
@@ -15,11 +18,12 @@ export async function post({request}) {
         };
     }
 
-    console.log('sign-in.post(' + request.method + ' ' + request.url + '): correct username and password supplied')
-    console.log('sign-in.post(' + request.method + ' ' + request.url + '): creating session')
-    const {id} = await createSession(email);
+    log('correct username and password supplied')
+    log('creating session')
 
-    console.log('sign-in.post(' + request.method + ' ' + request.url + '): checking cookies')
+    const {id} = await createSession(user);
+
+    log('checking cookies')
     const cookies = parse(request.headers.get('cookie') || '');
 
     const response = {
@@ -35,7 +39,7 @@ export async function post({request}) {
         },
         body: {
             user: {
-                email,
+                email: username,
             },
         },
     }
@@ -43,7 +47,7 @@ export async function post({request}) {
 
     if (cookies.redirectUrl) {
 
-        console.log('sign-in.post(' + request.method + ' ' + request.url + '): cookie redirectUrl present')
+        log('cookie redirectUrl present')
         response.headers['Redirect-Url'] = cookies.redirectUrl
 
         response.headers['Set-Cookie'].push(serialize('redirectUrl', '', {
@@ -53,9 +57,9 @@ export async function post({request}) {
         }))
 
     } else {
-        console.log('sign-in.post(' + request.method + ' ' + request.url + '): cookie redirectUrl NOT present')
+        log('cookie redirectUrl NOT present')
     }
 
-    console.log('sign-in.post(' + request.method + ' ' + request.url + '): returning ' + JSON.stringify(response))
+    log('returning ' + JSON.stringify(response))
     return response;
 }

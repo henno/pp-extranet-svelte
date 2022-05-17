@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.4.24-MariaDB, for Win64 (AMD64)
+-- MariaDB dump 10.19  Distrib 10.6.4-MariaDB, for osx10.16 (x86_64)
 --
--- Host: localhost    Database: pp_extranet
+-- Host: localhost    Database: ppExtranetSvelte
 -- ------------------------------------------------------
--- Server version	10.4.24-MariaDB
+-- Server version	10.6.4-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,11 +23,11 @@ DROP TABLE IF EXISTS `activities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `activities` (
-  `activityId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
-  `activityName` varchar(50) NOT NULL COMMENT 'Autocreated',
-  `activityDescription` varchar(191) NOT NULL,
-  PRIMARY KEY (`activityId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
+  `name` varchar(50) NOT NULL COMMENT 'Autocreated',
+  `description` varchar(191) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,12 +48,12 @@ DROP TABLE IF EXISTS `activitylog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `activitylog` (
-  `activityLogTimestamp` datetime NOT NULL,
-  `activityLogId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
+  `timestamp` datetime NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
   `userId` int(10) unsigned NOT NULL,
   `activityId` int(10) unsigned NOT NULL COMMENT 'Autocreated',
-  PRIMARY KEY (`activityLogId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,10 +74,10 @@ DROP TABLE IF EXISTS `companies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `companies` (
-  `companyId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
-  `companyName` varchar(50) NOT NULL COMMENT 'Autocreated',
-  PRIMARY KEY (`companyId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
+  `name` varchar(50) NOT NULL COMMENT 'Autocreated',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,34 +91,6 @@ INSERT INTO `companies` VALUES (1,'company #1'),(2,'company #2');
 UNLOCK TABLES;
 
 --
--- Table structure for table `deployments`
---
-
-DROP TABLE IF EXISTS `deployments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deployments` (
-  `deploymentId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `deploymentCommitDate` datetime NOT NULL,
-  `deploymentDate` datetime NOT NULL,
-  `deploymentCommitMessage` varchar(765) NOT NULL,
-  `deploymentCommitAuthor` varchar(255) DEFAULT NULL,
-  `deploymentCommitSha` varchar(256) NOT NULL,
-  PRIMARY KEY (`deploymentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `deployments`
---
-
-LOCK TABLES `deployments` WRITE;
-/*!40000 ALTER TABLE `deployments` DISABLE KEYS */;
-INSERT INTO `deployments` VALUES (2,'2022-03-24 13:31:19','2022-04-05 15:46:42','Initial commit','SanderPaasalu','67dac22'),(3,'2022-04-05 14:42:42','2022-04-05 15:50:42','wip (navbarile vaja saada dropdown paremasse äärde)','Henno Täht','b5eeaee'),(4,'2022-04-05 17:59:56','2022-04-07 14:27:23','Vaja saada firma rippmenüüs valitud firmat kuvama','renar','959263c'),(5,'2022-04-19 20:52:51','2022-04-19 21:08:41','Vaja edasi lisada veel väljasid uue tellimuse lisamise modalisse väljasid','Henno Täht','02a041a'),(6,'2022-04-19 21:09:09','2022-04-20 17:43:49','Updated dependencies','renar','c056e8d');
-/*!40000 ALTER TABLE `deployments` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `orders`
 --
 
@@ -126,18 +98,13 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `orders` (
-  `orderId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `orderBy` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orderLocation` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orderDate` datetime NOT NULL,
-  `orderDateDue` datetime NOT NULL,
-  `orderDescription` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orderWorkForm` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orderWorkGroup` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orderWorkType` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orderWorkAmount` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `orderWorkPrice` tinyint(4) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`orderId`)
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `location` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `dueAt` datetime NOT NULL,
+  `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -158,11 +125,11 @@ DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sessions` (
-  `sessionId` varchar(191) NOT NULL,
+  `id` varchar(191) NOT NULL,
   `userId` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`sessionId`),
+  PRIMARY KEY (`id`),
   KEY `sessions_users_userId_fk` (`userId`),
-  CONSTRAINT `sessions_users_userId_fk` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`)
+  CONSTRAINT `sessions_users_userId_fk` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -183,10 +150,10 @@ DROP TABLE IF EXISTS `settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `settings` (
-  `settingName` varchar(255) NOT NULL,
-  `settingValue` varchar(765) DEFAULT NULL,
-  PRIMARY KEY (`settingName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `name` varchar(255) NOT NULL,
+  `value` varchar(765) DEFAULT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,10 +174,10 @@ DROP TABLE IF EXISTS `translationlanguages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `translationlanguages` (
-  `translationLanguageCode` varchar(255) NOT NULL,
-  `translationLanguageName` varchar(255) NOT NULL,
-  PRIMARY KEY (`translationLanguageCode`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,12 +198,12 @@ DROP TABLE IF EXISTS `translations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `translations` (
-  `translationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `translationPhrase` varchar(765) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `translationState` varchar(255) NOT NULL DEFAULT 'existsInCode',
-  `TranslationSource` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`translationId`),
-  UNIQUE KEY `translations_translationPhrase_uindex` (`translationPhrase`)
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `phrase` varchar(765) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `state` varchar(255) NOT NULL DEFAULT 'existsInCode',
+  `source` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `translations_translationPhrase_uindex` (`phrase`)
 ) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -258,13 +225,14 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userName` varchar(191) NOT NULL,
-  `userEmail` varchar(191) NOT NULL,
-  `userIsAdmin` tinyint(4) NOT NULL DEFAULT 0,
-  `userPassword` varchar(191) NOT NULL,
-  `userDeleted` tinyint(1) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`userId`)
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) NOT NULL,
+  `username` varchar(191) NOT NULL,
+  `isAdmin` tinyint(4) NOT NULL DEFAULT 0,
+  `password` varchar(191) NOT NULL,
+  `deleted` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_userUsername_uindex` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -287,4 +255,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-11 20:57:23
+-- Dump completed on 2022-05-17 14:13:24

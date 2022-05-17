@@ -8,77 +8,74 @@ datasource db {
 }
 
 model activities {
-  activityId          Int    @id @default(autoincrement()) @db.UnsignedInt
-  activityName        String @db.VarChar(50)
-  activityDescription String
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  name        String        @db.VarChar(50)
+  description String
+  activitylog activitylog[]
 }
 
 model activitylog {
-  activityLogTimestamp DateTime @db.DateTime(0)
-  activityLogId        Int      @id @default(autoincrement()) @db.UnsignedInt
-  userId               Int      @db.UnsignedInt
-  activityId           Int      @db.UnsignedInt
+  timestamp  DateTime   @db.DateTime(0)
+  id         Int        @id @default(autoincrement()) @db.UnsignedInt
+  userId     Int        @db.UnsignedInt
+  activityId Int        @db.UnsignedInt
+  activities activities @relation(fields: [activityId], references: [id], onUpdate: Restrict, map: "activitylog_activities_id_fk")
+  users      users      @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "activitylog_users_id_fk")
+
+  @@index([activityId], map: "activitylog_activities_id_fk")
+  @@index([userId], map: "activitylog_users_id_fk")
 }
 
 model companies {
-  companyId   Int    @id @default(autoincrement()) @db.UnsignedInt
-  companyName String @db.VarChar(50)
-}
-
-model deployments {
-  deploymentId            Int      @id @default(autoincrement()) @db.UnsignedInt
-  deploymentCommitDate    DateTime @db.DateTime(0)
-  deploymentDate          DateTime @db.DateTime(0)
-  deploymentCommitMessage String   @db.VarChar(765)
-  deploymentCommitAuthor  String?  @db.VarChar(255)
-  deploymentCommitSha     String   @db.VarChar(256)
+  id   Int    @id @default(autoincrement()) @db.UnsignedInt
+  name String @db.VarChar(50)
 }
 
 model orders {
-  orderId          Int      @id @default(autoincrement()) @db.UnsignedInt
-  orderBy          String
-  orderLocation    String
-  orderDate        DateTime @db.DateTime(0)
-  orderDateDue     DateTime @db.DateTime(0)
-  orderDescription String
-  orderWorkForm    String
-  orderWorkGroup   String
-  orderWorkType    String
-  orderWorkAmount  String
-  orderWorkPrice   Int      @default(0) @db.TinyInt
+  id          Int      @id @default(autoincrement()) @db.UnsignedInt
+  userId      Int      @db.UnsignedInt
+  location    String
+  createdAt   DateTime @db.DateTime(0)
+  dueAt       DateTime @db.DateTime(0)
+  description String
+  users       users    @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "orders_users_id_fk")
+
+  @@index([userId], map: "orders_users_id_fk")
 }
 
 model sessions {
-  sessionId String @id
-  userId    Int    @db.UnsignedInt
-  users     users  @relation(fields: [userId], references: [userId], onUpdate: Restrict, map: "sessions_users_userId_fk")
+  id     String @id
+  userId Int    @db.UnsignedInt
+  users  users  @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "sessions_users_userId_fk")
 
   @@index([userId], map: "sessions_users_userId_fk")
 }
 
 model settings {
-  settingName  String  @id @db.VarChar(255)
-  settingValue String? @db.VarChar(765)
+  name  String  @id @db.VarChar(255)
+  value String? @db.VarChar(765)
 }
 
 model translationlanguages {
-  translationLanguageCode String @id @db.VarChar(255)
-  translationLanguageName String @db.VarChar(255)
+  code String @id @db.VarChar(255)
+  name String @db.VarChar(255)
 }
 
 model translations {
-  translationId     Int     @id @default(autoincrement()) @db.UnsignedInt
-  translationPhrase String  @unique(map: "translations_translationPhrase_uindex") @db.VarChar(765)
-  translationState  String  @default("existsInCode") @db.VarChar(255)
-  TranslationSource String? @db.VarChar(255)
+  id     Int     @id @default(autoincrement()) @db.UnsignedInt
+  phrase String  @unique(map: "translations_translationPhrase_uindex") @db.VarChar(765)
+  state  String  @default("existsInCode") @db.VarChar(255)
+  source String? @db.VarChar(255)
 }
 
 model users {
-  userId       Int        @id @default(autoincrement()) @db.UnsignedInt
-  userName     String
-  userEmail    String
-  userIsAdmin  Int        @default(0) @db.TinyInt
-  userPassword String
-  userDeleted  Boolean    @default(false)
-  sessions     sessions[]
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  name        String
+  username    String        @unique(map: "users_userUsername_uindex")
+  isAdmin     Int           @default(0) @db.TinyInt
+  password    String
+  deleted     Boolean       @default(false)
+  activitylog activitylog[]
+  orders      orders[]
+  sessions    sessions[]
 }

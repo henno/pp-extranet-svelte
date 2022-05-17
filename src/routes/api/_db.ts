@@ -1,29 +1,35 @@
 import { v4 as uuidv4 } from 'uuid';
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 
-const users = [
-    {
-        email: 'mail@example.com',
-        // ⚠️ CAUTION: Do not store a plain password like this. Use proper hashing and salting.
-        password: '1234',
-    },
-];
 
-let sessions = [];
+let sessions: any = [];
 
-export const getUserByEmail = async (email) => {
-    const existingUser = users.find((user) => user.email === email);
+export const getUserByUsername = async function (username: string) {
+    const existingUser = await prisma.users.findUnique({
+        where:{username: username}
+    })
     if (!existingUser) return Promise.resolve(null);
     return Promise.resolve(existingUser);
 };
 
-export const registerUser = (user) => {
+export const registerUser = (user:any) => {
+
     const existingUser = users.find((u) => u.email === user.email);
     if (existingUser) return Promise.reject(new Error('User already exists'));
     users.push(user);
     return Promise.resolve(user);
 };
 
-export const createSession = (email) => {
+export const createSession = async (user: ) => {
+
+    const session = await prisma.sessions.create({
+        data: {
+            sessionId:
+        },
+    })
+
+
     const session = {
         id: uuidv4(),
         email,
@@ -32,9 +38,15 @@ export const createSession = (email) => {
     return Promise.resolve(session);
 };
 
-export const getSession = (id) => {
+export const getSession = async (id) => {
 
-    const session = sessions.find((session) => session.id === id);
+
+
+    const session = await prisma.sessions.findUnique({
+        where: {
+            sessionId: id,
+        },
+    })
     if (!session) return Promise.resolve(null);
     return Promise.resolve(session);
 };

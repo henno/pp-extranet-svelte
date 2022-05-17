@@ -1,4 +1,4 @@
-import {getSession as getSessionFromApi} from './routes/api/_db';
+import {getSession as getSessionFromApi} from './routes/api/_db.js';
 import {parse, serialize} from "cookie";
 import LogRocket from 'logrocket';
 LogRocket.init('r4tux5/pp_extranet');

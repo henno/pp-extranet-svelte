@@ -1,9 +1,9 @@
-import { createSession, getUserByEmail, registerUser } from './_db';
+import { createSession, getUserByUsername, registerUser } from './_db.js';
 import { serialize } from 'cookie';
 
 export async function post({ request }) {
     const { email, password } = await request.json();
-    const user = await getUserByEmail(email);
+    const user = await getUserByUsername(email);
 
     if (user) {
         return {
