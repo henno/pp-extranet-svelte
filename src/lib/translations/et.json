@@ -12,5 +12,7 @@
   "addFile": "Lisa fail(-id)",
   "addFileDescription": "Lisa tellimusele pildid või failid",
   "homePage": "Avaleht",
-  "signOut": "Logi välja"
+  "signOut": "Logi välja",
+  "jobs": "Tööd",
+  "addJob": "Lisa töö"
 }

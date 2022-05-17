@@ -23,15 +23,20 @@
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
     import {t} from "../translations/translations.js";
+
     const navigation = [
         {
             href: '/',
-            name: 'Home',
+            name: 'Company 1',
         },
         {
             href: '/protected',
+            name: `Company 2`,
+        }/*,
+        {
+            href: '/protected',
             name: `${$session.user ? '🔓' : '🔒'} Protected`,
-        },
+        },*/
     ];
     async function handleSignOut() {
         await fetch('/api/sign-out');
@@ -47,6 +52,9 @@
                 <NavLink href="/">{$t('homePage')}</NavLink>
             </NavItem>
             {#if $session.user}
+                <NavItem>
+                    <NavLink href="/jobs">{$t('jobs')}</NavLink>
+                </NavItem>
                 <NavItem>
                     <NavLink on:click={handleSignOut}>{$t('signOut')}</NavLink>
                 </NavItem>

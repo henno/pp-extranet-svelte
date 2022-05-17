@@ -1,5 +1,10 @@
 import {getSession as getSessionFromApi} from './routes/api/_db';
 import {parse, serialize} from "cookie";
+import LogRocket from 'logrocket';
+LogRocket.init('r4tux5/pp_extranet');
+LogRocket.identify('1', {
+    userName: 'Demo User'
+});
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({event, resolve}) {
