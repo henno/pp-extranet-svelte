@@ -51,14 +51,14 @@
                     <NavLink on:click={handleSignOut}>{$t('signOut')}</NavLink>
                 </NavItem>
             {/if}
-            <Dropdown class="position-absolute end-0 me-2" nav setActiveFromChild>
+            <!--<Dropdown class="position-absolute end-0 me-2" nav setActiveFromChild>
                 <DropdownToggle nav class="nav-link" caret>Dropdown</DropdownToggle>
                 <DropdownMenu dark>
                     {#each navigation as link}
                         <DropdownItem href="{link.href}">{link.name}</DropdownItem>
                     {/each}
                 </DropdownMenu>
-            </Dropdown>
+            </Dropdown>-->
         </Nav>
     </Navbar>
 </header>
